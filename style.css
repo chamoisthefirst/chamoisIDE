@@ -1,0 +1,15 @@
+textarea{
+    background-color: black;
+    color: white;
+}
+
+#input{
+    width:48vw;
+    height:95vh;
+    
+}
+
+#output{
+    width:48vw;
+    height:95vh;
+}
