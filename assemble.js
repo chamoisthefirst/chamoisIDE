@@ -15,6 +15,8 @@ function assemble(assembly){
     let out = "";
     for(let i = 0; i < code.length; i++){
 
+        if(i>7)continue;
+
         let instr = `${code[i]}`.split(" ");
         let op = instr[0];
         let a = `${instr[1]}`.replace(/\D/g,'');
