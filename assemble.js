@@ -1,26 +1,24 @@
 let instructions = "sub add ldi cpy and nor xor rsh".split(" ");
+
+
 function assemble(assembly){
     let c = `\n${assembly}`.split("\n");
-    console.log(` c: ${c}`);
+    
     let code = [];
     for(let i = 0; i < c.length; i++){
-        c[i] = c[i].trim();
-        if(c[i] != "" && !(c[i].startsWith("/") | c[i].startsWith("#"))){
+        c[i] = `${c[i]}`.trim();
+        if(!(c[i].startsWith("/") | c[i].startsWith("#") | c[i] == "")){
             code.push(c[i]);
         }
     }
 
-    console.log(` c: ${c}`);
-    console.log(` code: ${code}`);
-
     let out = "";
-    // for(let i = 0; i < code.length; i++){ // large instruction ROM edition
-    for(let i = 0; i < 8; i++){
+    for(let i = 0; i < code.length; i++){
 
-        let instr = code[i].split(" ");
+        let instr = `${code[i]}`.split(" ");
         let op = instr[0];
-        let a = instr[1].replace(/\D/g,'');
-        let b = instr[2].replace(/\D/g,'');
+        let a = `${instr[1]}`.replace(/\D/g,'');
+        let b = `${instr[2]}`.replace(/\D/g,'');
 
         let opcode = dec2bin(instructions.indexOf(op));
         opcode = toLength(opcode, 3);
@@ -46,4 +44,28 @@ function toLength(string, length){
 
 function dec2bin(dec) {
   return (dec >>> 0).toString(2);
+}
+
+function desemble(hexcode){
+    let binaryString = parseInt(hexcode,16).toString(2);
+    while(binaryString.length%9 != 0){
+        binaryString = `0${binaryString}`;
+    }
+
+    let instr = commafy(binaryString).split(",");
+
+    let out = "";
+
+    for(let i = 0; i < instr.length; i+=3){
+        out+=`${instructions[parseInt(instr[i],2)]} ${parseInt(instr[i+1],2)} ${parseInt(instr[i+2],2)}\n`;
+    }
+
+    return out;
+}
+
+function commafy(num) {
+  num = num.toString();
+  var pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(num)) num = num.replace(pattern, "$1,$2");
+  return num;
 }
